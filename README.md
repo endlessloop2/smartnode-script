@@ -1,0 +1,2 @@
+# smartnode-script
+Setup Smartnode
