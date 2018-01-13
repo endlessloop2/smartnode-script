@@ -9,12 +9,11 @@ import os
 import time
 from urllib2 import urlopen
 
-BOOTSTRAP_URL = "" #TODO
-SENTINEL_GIT_URL = ""
+BOOTSTRAP_URL = "http://proteanx.com/txindexstrap.zip"
 
 MN_USERNAME = ""
 MN_PORT = 9678
-MN_RPCPORT = 22350 # TODO
+MN_RPCPORT = 9679 # https://github.com/SmartCash/smartcash/blob/1.1/src/chainparamsbase.cpp#L35
 MN_NODELIST = ""
 
 MN_LFOLDER = ".smartcash"
@@ -137,7 +136,7 @@ def setup_wallet():
           f.close()
 
     print_info("Installing useful programs...")
-    run_command("apt-get -y --assume-yes install git unzip iptables htop nano ")
+    run_command("apt-get -y --assume-yes install git zip iptables htop nano wget")
     print_info("Adding wallet repository...")
     run_command("apt-get -y install software-properties-common")
     run_command("sudo add-apt-repository ppa:smartcash/ppa")
@@ -188,13 +187,11 @@ masternodeprivkey={}
         f.write(config)
         
     print_info("Downloading blockchain file...")#TODO
-    run_command("apt-get --assume-yes install megatools")
-    filename = "blockchain.rar"
-    run_command_as(MN_USERNAME, "cd && megadl '{}' --path {}".format(BOOTSTRAP_URL, filename))
+    filename = "blockchain.zip"
+    run_command_as(MN_USERNAME, "cd && wget -O {} {}".format(filename, BOOTSTRAP_URL))
     
-    print_info("Unzipping the file...")
-    run_command("apt-get --assume-yes install unrar")    
-    run_command_as(MN_USERNAME, "cd && unrar x -u {} {}".format(filename, MN_LFOLDER))
+    print_info("Unzipping the file...")   
+    run_command_as(MN_USERNAME, "cd && unzip {} -d {}".format(filename, MN_LFOLDER))
        
     os.system('su - {} -c "{}" '.format(MN_USERNAME, MN_DAEMON + ' -daemon'))
     print_warning("Masternode started syncing in the background...")
@@ -238,7 +235,6 @@ def end():
 
 Masternode data:""".format(MN_USERNAME, MN_CLI, MN_EXPLORER) + mn_data)
 
-    print_warning("hi")
 
 def main():
     print_welcome()
