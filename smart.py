@@ -171,11 +171,12 @@ port={}
 server=1
 listen=1
 daemon=1
+txindex=1
 logtimestamps=1
 mnconflock=1
-masternode=1
+smartnode=1
 externalip={}:{}
-masternodeprivkey={}
+smartnodeprivkey={}
 {}""".format(rpc_username, rpc_password, MN_RPCPORT, MN_PORT, SERVER_IP, MN_PORT, masternode_priv_key, MN_NODELIST)
 
     # creates folder structure
