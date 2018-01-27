@@ -193,7 +193,7 @@ masternodeprivkey={}
     print_info("Unzipping the file...")   
     run_command_as(MN_USERNAME, "cd && unzip {} -d {}".format(filename, MN_LFOLDER))
        
-    os.system('su - {} -c "{}" '.format(MN_USERNAME, MN_DAEMON + ' -daemon'))
+    os.system('su - {} -c "{}" '.format(MN_USERNAME, MN_DAEMON + ' -daemon -reindex'))
     print_warning("Masternode started syncing in the background...")
 
 def crontab(job):
