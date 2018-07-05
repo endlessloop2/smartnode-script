@@ -152,6 +152,7 @@ def setup_masternode():
     global MN_USERNAME
     MN_USERNAME = masternode_alias
     SERVER_IP = raw_input("IP to use: ")
+    MN_RPCPORT = raw_input("RPC port: ")
     run_command("useradd --create-home -G sudo {}".format(MN_USERNAME))
     
     print_info("Open your desktop wallet config file (%appdata%/{}/{}) and copy\n    your rpc username and password! If it is not there create one! E.g.:\n\trpcuser=[SomeUserName]\n\trpcpassword=[DifficultAndLongPassword]".format(MN_WFOLDER, MN_CONFIGFILE))
@@ -167,18 +168,17 @@ def setup_masternode():
 rpcpassword={}
 rpcallowip=127.0.0.1
 rpcport={}
+bind={}
 port={}
 server=1
 listen=1
 daemon=1
-txindex=1
 logtimestamps=1
 mnconflock=1
-smartnode=1
+masternode=1
 externalip={}:{}
-smartnodeprivkey={}
-{}""".format(rpc_username, rpc_password, MN_RPCPORT, MN_PORT, SERVER_IP, MN_PORT, masternode_priv_key, MN_NODELIST)
-
+masternodeprivkey={}
+{}""".format(rpc_username, rpc_password, MN_RPCPORT, SERVER_IP, MN_PORT, SERVER_IP, MN_PORT, masternode_priv_key, MN_NODELIST)
     # creates folder structure
     run_command_as(MN_USERNAME, "mkdir -p /home/{}/{}/".format(MN_USERNAME, MN_LFOLDER))
     run_command_as(MN_USERNAME, "touch /home/{}/{}/{}".format(MN_USERNAME, MN_LFOLDER, MN_CONFIGFILE))
@@ -209,7 +209,7 @@ def crontab(job):
 
 
 def autostart_masternode():
-    job = "@reboot /usr/local/bin/{}\n".format(MN_DAEMON)
+    job = "@reboot {}\n".format(MN_DAEMON)
     crontab(job)
     
 def end():
